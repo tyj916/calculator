@@ -7,6 +7,11 @@ body {
     font-size: 18px;
 }
 
+p {
+    word-break: break-all;
+    white-space: normal;
+}
+
 #main-container {
     height: 80vh;
     display: flex;
@@ -27,13 +32,18 @@ body {
 
 #display {
     flex: 1;
+    width: 100%;
     background-color: #E9EDC9;
     border: 1px solid black;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
-    padding-right: 24px;
+    padding: 0 24px;
     margin-bottom: 24px;
+}
+
+#display-item {
+    text-align: right;
 }
 
 #button-container {
