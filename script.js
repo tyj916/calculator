@@ -105,6 +105,8 @@ function populateDisplay(e) {
         }
 
         current.classList.add('saved');
+    } else if (selection === 'clear') {
+        cleanUp();
     }
 }
 
