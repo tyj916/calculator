@@ -5,6 +5,7 @@
 body {
     margin: 0;
     font-size: 18px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 p {
@@ -25,7 +26,7 @@ p {
     background-color: #FEFAE0;
     border: 1px solid black;
     border-radius: 8px;
-    padding: 36px;
+    padding: 32px;
     display: flex;
     flex-direction: column;
 }
@@ -36,14 +37,26 @@ p {
     background-color: #E9EDC9;
     border: 1px solid black;
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    padding: 0 24px;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 8px 24px;
     margin-bottom: 24px;
 }
 
-#display-item {
+#display-last, #display-current {
+    margin: 0;
     text-align: right;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#display-last {
+    flex: 1;
+    
+}
+
+#display-current {
+    font-size: 32px;
 }
 
 #button-container {

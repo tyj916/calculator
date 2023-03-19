@@ -29,3 +29,23 @@ function operate(operator, num1, num2) {
             return (divide(num1, num2));
     }
 }
+
+function populateDisplay(e) {
+    const currentValue = document.querySelector('#display-current');
+    if (e.target.className === 'number') {
+        if (currentValue.innerText === '0') {
+            currentValue.innerText = e.target.innerText;
+        } else {
+            currentValue.innerText += e.target.innerText;
+        }
+    }
+}
+
+function calculator() {
+    const allButtons = document.querySelectorAll("#button-container button");
+    allButtons.forEach(button => {
+        button.addEventListener('click', populateDisplay);
+    });
+}
+
+calculator();
