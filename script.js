@@ -73,23 +73,28 @@ function isSingleDigit(num) {
     return num.length == 1;
 }
 
+function isCalculated() {
+    const current = document.querySelector('#current-value');
+    return current.classList.contains('calculated');
+}
+
 function populateDisplay(e) {
     const selection = e.target.dataset.type;
     const current = document.querySelector('#current-value');
     const operation = document.querySelector("#operation");
-
-    const currentValue = +current.innerText;
-    if (isNaN(currentValue)) {
+    if (current.innerText.includes('ERR')) {
         current.innerText = 0;
         operation.innerText = '';
         return;
     }
+    const currentValue = +current.innerText;
+    
 
     switch(selection) {
         case 'number':
-            if (currentValue === 0 || current.classList.contains('saved')) {
+            if (currentValue === 0 || isCalculated()) {
                 current.innerText = e.target.innerText;
-                current.classList.remove('saved');
+                current.classList.remove('calculated');
             } else {
                 current.innerText += e.target.innerText;
             }
@@ -109,7 +114,7 @@ function populateDisplay(e) {
                 const result = operate(operand, lastValue, currentValue);
 
                 if (selection === 'enter') {
-                    if (current.classList.contains('saved')) {
+                    if (isCalculated()) {
                         return;
                     }
                     operation.innerText = `${lastValue} ${getOperandSymbol(operand)} ${currentValue} =`;
@@ -126,7 +131,7 @@ function populateDisplay(e) {
                     operation.innerText = `${currentValue} ${e.target.innerText}`;
                 }
             }
-            current.classList.add('saved');
+            current.classList.add('calculated');
             break;
 
         case 'clear' :
