@@ -41,21 +41,22 @@ p {
     justify-content: space-evenly;
     padding: 8px 24px;
     margin-bottom: 24px;
+    border-radius: 2px;
 }
 
-#display-last, #display-current {
+#operation, #current-value {
     margin: 0;
     text-align: right;
     display: flex;
     justify-content: flex-end;
 }
 
-#display-last {
+#operation {
     flex: 1;
     
 }
 
-#display-current {
+#current-value {
     font-size: 32px;
 }
 
