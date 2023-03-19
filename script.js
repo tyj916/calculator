@@ -113,6 +113,8 @@ function populateDisplay(e) {
         cleanUp();
     } else if (selection === 'delete') {
         current.innerText = isSingleDigit(current.innerText) ? 0 : current.innerText.slice(0, -1);
+    } else if (selection === 'negative') {
+        current.innerText *= -1;
     }
 }
 
