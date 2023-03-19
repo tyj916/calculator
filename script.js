@@ -69,6 +69,10 @@ function cleanUp() {
     operation.innerText = '';
 }
 
+function isSingleDigit(num) {
+    return num.length == 1;
+}
+
 function populateDisplay(e) {
     const selection = e.target.dataset.type;
     const current = document.querySelector('#current-value');
@@ -107,6 +111,8 @@ function populateDisplay(e) {
         current.classList.add('saved');
     } else if (selection === 'clear') {
         cleanUp();
+    } else if (selection === 'delete') {
+        current.innerText = isSingleDigit(current.innerText) ? 0 : current.innerText.slice(0, -1);
     }
 }
 
