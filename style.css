@@ -19,7 +19,7 @@ body {
     height: 480px;
     background-color: #FEFAE0;
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 36px;
     display: flex;
     flex-direction: column;
@@ -31,21 +31,20 @@ body {
     border: 1px solid black;
     display: flex;
     justify-content: flex-end;
-    align-items: center;
+    align-items: flex-end;
     padding-right: 24px;
     margin-bottom: 24px;
 }
 
 #button-container {
+    flex: 3;
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    align-items: flex-end;
 }
 
 #button-container button {
     flex: 1 0 60px;
-    height: 60px;
-    border-radius: 50%;
+    border-radius: 6px;
     font-size: 16px;
 }
