@@ -55,7 +55,7 @@ function evaluate(e) {
     if (e.target.id === 'enter') {
         if (toBeReset()) {
             return;
-        } else if (operation.innerText && result) {
+        } else if (operation.innerText && !isNaN(result)) {
             operation.innerText = `${lastValue} ${getOperandSymbol(operand)} ${currentValue} =`;
             current.innerText = result;
         } else {
