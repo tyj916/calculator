@@ -1,3 +1,77 @@
+const current = document.querySelector('#current-value');
+const operation = document.querySelector("#operation");
+calculator();
+
+function calculator() {
+    const numbers = document.querySelectorAll("button[data-type='number']");
+    const operands = document.querySelectorAll("button[data-type='operand']");
+    const enter = document.querySelector("#enter");
+    const clear = document.querySelector("#clear");
+    const del = document.querySelector("#delete");
+    const point = document.querySelector("#point");
+    const negative = document.querySelector("#negative");
+
+    numbers.forEach(num => {
+        num.addEventListener('click', appendNumber);
+    });
+
+    operands.forEach(operand => {
+        operand.addEventListener('click', evaluate);
+    })
+
+    enter.addEventListener('click', evaluate);
+    clear.addEventListener('click', cleanUp);
+    del.addEventListener('click', deleteLastDigit);
+    point.addEventListener('click', appendPoint);
+    negative.addEventListener('click', timesNegative);
+}
+
+function appendNumber(e) {
+    const enteredNumber = e.target.innerText;
+    const currentValue = current.innerText;
+
+    if (currentValue === '0' || toBeReset()) {
+        current.innerText = enteredNumber;
+        current.classList.remove('reset');
+    } else {
+        current.innerText += enteredNumber;
+    }
+}
+
+function evaluate(e) {
+    const operand = getPreviousOperand(operation.innerText.slice(-1));
+    const currentValue = +current.innerText;
+
+    if (currentValue === 0 && operand === 'divide') {
+        current.innerText = 'ERR!';
+        operation.innerText = 'Cannot divide by 0, click to reset';
+        current.classList.add('reset');
+        return;
+    }
+    
+    const lastValue = +operation.innerText.slice(0, -2);
+    const result = operate(operand, lastValue, currentValue);
+
+    if (e.target.id === 'enter') {
+        if (toBeReset()) {
+            return;
+        } else if (operation.innerText && result) {
+            operation.innerText = `${lastValue} ${getOperandSymbol(operand)} ${currentValue} =`;
+            current.innerText = result;
+        } else {
+            return;
+        }
+    } else {
+        if (operation.innerText && !operation.innerText.includes('=')) {
+            operation.innerText = `${result} ${e.target.innerText}`;
+        } else {
+            operation.innerText = `${currentValue} ${e.target.innerText}`;
+        }
+    }
+
+    current.classList.add('reset');
+}
+
 function add(a, b) {
     return a + b;
 }
@@ -14,8 +88,8 @@ function divide(a, b) {
     return a / b;
 }
 
-function operate(operator, num1, num2) {
-    switch(operator) {
+function operate(operand, num1, num2) {
+    switch(operand) {
         case 'add':
             return (add(num1, num2));
 
@@ -30,7 +104,7 @@ function operate(operator, num1, num2) {
     }
 }
 
-function getOperandText(operand) {
+function getPreviousOperand(operand) {
     switch(operand) {
         case '+':
             return 'add';
@@ -63,8 +137,6 @@ function getOperandSymbol(operand) {
 }
 
 function cleanUp() {
-    const current = document.querySelector('#current-value');
-    const operation = document.querySelector("#operation");
     current.innerText = 0;
     operation.innerText = '';
 }
@@ -73,86 +145,20 @@ function isSingleDigit(num) {
     return num.length == 1;
 }
 
-function isCalculated() {
-    const current = document.querySelector('#current-value');
-    return current.classList.contains('calculated');
+function deleteLastDigit() {
+    current.innerText = isSingleDigit(current.innerText) ? 0 : current.innerText.slice(0, -1);
 }
 
-function populateDisplay(e) {
-    const selection = e.target.dataset.type;
-    const current = document.querySelector('#current-value');
-    const operation = document.querySelector("#operation");
-    if (current.innerText.includes('ERR')) {
-        current.innerText = 0;
-        operation.innerText = '';
-        return;
-    }
-    const currentValue = +current.innerText;
-    
+function toBeReset() {
+    return current.classList.contains('reset');
+}
 
-    switch(selection) {
-        case 'number':
-            if (currentValue === 0 || isCalculated()) {
-                current.innerText = e.target.innerText;
-                current.classList.remove('calculated');
-            } else {
-                current.innerText += e.target.innerText;
-            }
-            break;
-
-        case 'enter':
-        case 'operand':
-            if (operation.innerText) {
-                const lastValue = +operation.innerText.slice(0, -2);
-                const operand = getOperandText(operation.innerText.slice(-1));
-
-                if (currentValue === 0 && operand === 'divide') {
-                    current.innerText = 'ERR!';
-                    return;
-                }
-                
-                const result = operate(operand, lastValue, currentValue);
-
-                if (selection === 'enter') {
-                    if (isCalculated()) {
-                        return;
-                    }
-                    operation.innerText = `${lastValue} ${getOperandSymbol(operand)} ${currentValue} =`;
-                    current.innerText = result;
-                } else {
-                    if (!operation.innerText.includes('=')) {
-                        operation.innerText = `${result} ${e.target.innerText}`;
-                    } else {
-                        operation.innerText = `${currentValue} ${e.target.innerText}`;
-                    }
-                }
-            } else {
-                if (selection === 'operand') {
-                    operation.innerText = `${currentValue} ${e.target.innerText}`;
-                }
-            }
-            current.classList.add('calculated');
-            break;
-
-        case 'clear' :
-            cleanUp();
-            break;
-
-        case 'delete' :
-            current.innerText = isSingleDigit(current.innerText) ? 0 : current.innerText.slice(0, -1);
-            break;
-
-        case 'negative':
-            current.innerText *= -1;
-            break;
+function appendPoint(e) {
+    if (!current.innerText.includes('.')) {
+        current.innerText += e.target.innerText;
     }
 }
 
-function calculator() {
-    const allButtons = document.querySelectorAll("#button-container button");
-    allButtons.forEach(button => {
-        button.addEventListener('click', populateDisplay);
-    });
+function timesNegative() {
+    current.innerText *= -1;
 }
-
-calculator();
