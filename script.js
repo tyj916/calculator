@@ -43,9 +43,8 @@ function populateDisplay(operation) {
         switch (target.value) {
             case 'all-clear':
                 display.textContent = 0;
-                operation.num1 = 0;
+                operation.num = 0;
                 operation.operator = '';
-                operation.num2 = 0;
                 break;
 
             case 'negative':
@@ -71,7 +70,7 @@ function populateDisplay(operation) {
                     break;
                 }
                 display.textContent = operate(operation.operator, operation.num, display.textContent);
-                operation.num = display.textContent;
+                operation.num = 0;
                 resetNum = true;
                 break;
 
