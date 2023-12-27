@@ -14,15 +14,6 @@ function divide(a, b) {
     return a / b;
 }
 
-function calculate(operation) {
-    const split = operation.split(' ');
-    const num1 = split[0];
-    const operator = split[1];
-    const num2 = split[2];
-    const result = operate(operator, num1, num2);
-    return result;
-}
-
 function operate(operator, num1, num2) {
     switch (operator) {
         case '+':
@@ -39,4 +30,71 @@ function operate(operator, num1, num2) {
     }
 }
 
-console.log(calculate('1 + 2'));
+function calculate(operation) {
+    const split = operation.split(' ');
+    const num1 = split[0];
+    const operator = split[1];
+    const num2 = split[2];
+    const result = operate(operator, num1, num2);
+    return result;
+}
+
+function populateDisplay(operation) {
+    const calculator = document.querySelector('#calculator');
+    const display = calculator.querySelector('.display');
+
+    calculator.addEventListener('click', event => {
+        let target = event.target;
+
+        if (!target.value) return;
+
+        switch (target.value) {
+            case 'all-clear':
+                display.textContent = 0;
+                break;
+
+            case 'negative':
+                if (!isNaN(display.textContent)) {
+                    display.textContent *= -1;
+                }
+                break;
+
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+                if (!isNaN(display.textContent)) {
+                    operation.num = display.textContent;
+                }
+                operation.operator = target.value;
+                display.textContent = target.value;
+                break;
+
+            case '=':
+                if (isNaN(display.textContent)) {
+                    display.textContent = operation.num;
+                } else {
+                    let num1 = operation.num;
+                    let operator = operation.operator;
+                    let num2 = display.textContent;
+                    display.textContent = operate(operator, num1, num2);
+                    operation.num = display.textContent;
+                }
+                break;
+
+            default:
+                if (display.textContent === '0' || isNaN(display.textContent)) {
+                    display.textContent = target.value;
+                } else {
+                    display.textContent += target.value;
+                }
+                break;
+        }
+    });
+}
+
+let operation = {
+    num: 0,
+    operator: '+',
+};
+populateDisplay(operation);
