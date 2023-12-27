@@ -71,14 +71,23 @@ function populateDisplay(operation) {
                 break;
 
             case '=':
-                if (isNaN(display.textContent)) {
-                    display.textContent = operation.num;
+                if (isNaN(display.textContent) || !operation.operator) {
+                    break;
                 } else {
                     let num1 = operation.num;
                     let operator = operation.operator;
                     let num2 = display.textContent;
                     display.textContent = operate(operator, num1, num2);
                     operation.num = display.textContent;
+                }
+                break;
+
+            case '.':
+                if (isNaN(display.textContent)){
+                    break;
+                }
+                if (!display.textContent.includes('.')) {
+                    display.textContent += target.value;
                 }
                 break;
 
@@ -95,6 +104,6 @@ function populateDisplay(operation) {
 
 let operation = {
     num: 0,
-    operator: '+',
+    operator: '',
 };
 populateDisplay(operation);
