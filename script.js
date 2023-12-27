@@ -33,6 +33,7 @@ function operate(operator, num1, num2) {
 function populateDisplay(operation) {
     const calculator = document.querySelector('#calculator');
     const display = calculator.querySelector('.display');
+    let resetNum = false;
 
     calculator.addEventListener('click', event => {
         let target = event.target;
@@ -42,6 +43,9 @@ function populateDisplay(operation) {
         switch (target.value) {
             case 'all-clear':
                 display.textContent = 0;
+                operation.num1 = 0;
+                operation.operator = '';
+                operation.num2 = 0;
                 break;
 
             case 'negative':
@@ -54,23 +58,21 @@ function populateDisplay(operation) {
             case '-':
             case '*':
             case '/':
-                if (!isNaN(display.textContent)) {
-                    operation.num = display.textContent;
+                if (operation.num) {
+                    display.textContent = operate(operation.operator, operation.num, display.textContent);
                 }
+                operation.num = display.textContent;
+                resetNum = true;
                 operation.operator = target.value;
-                display.textContent = target.value;
                 break;
 
             case '=':
-                if (isNaN(display.textContent) || !operation.operator) {
+                if (isNaN(display.textContent) || !operation.operator || resetNum) {
                     break;
-                } else {
-                    let num1 = operation.num;
-                    let operator = operation.operator;
-                    let num2 = display.textContent;
-                    display.textContent = operate(operator, num1, num2);
-                    operation.num = display.textContent;
                 }
+                display.textContent = operate(operation.operator, operation.num, display.textContent);
+                operation.num = display.textContent;
+                resetNum = true;
                 break;
 
             case '.':
@@ -83,8 +85,9 @@ function populateDisplay(operation) {
                 break;
 
             default:
-                if (display.textContent === '0' || isNaN(display.textContent)) {
+                if (display.textContent === '0' || resetNum) {
                     display.textContent = target.value;
+                    resetNum = false;
                 } else {
                     display.textContent += target.value;
                 }
