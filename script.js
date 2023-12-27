@@ -30,15 +30,6 @@ function operate(operator, num1, num2) {
     }
 }
 
-function calculate(operation) {
-    const split = operation.split(' ');
-    const num1 = split[0];
-    const operator = split[1];
-    const num2 = split[2];
-    const result = operate(operator, num1, num2);
-    return result;
-}
-
 function populateDisplay(operation) {
     const calculator = document.querySelector('#calculator');
     const display = calculator.querySelector('.display');
